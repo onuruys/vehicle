@@ -19,6 +19,23 @@ namespace VehicleAPI.Utils
             CreateMap<BrandEntity, BrandModel>();
             CreateMap<BrandDetailEntity, BrandDetailModel>();
             CreateMap<BrandLovEntity, BrandLovModel>();
+
+
+            // Vehicle Mapper Configuration
+            CreateMap<VehicleModel, VehicleEntity>();
+            CreateMap<VehicleFilterModel, VehicleFilterEntity>();
+
+            CreateMap<VehicleEntity, VehicleModel>();
+            CreateMap<VehicleDetailEntity, VehicleDetailModel>();
+            CreateMap<VehicleLovEntity, VehicleLovModel>();
+
+            // Model Mapper Configuration
+            CreateMap<ModelModel, ModelEntity>();
+            CreateMap<ModelFilterModel, ModelFilterEntity>();
+
+            CreateMap<ModelEntity, ModelModel>();
+            CreateMap<ModelDetailEntity, ModelDetailModel>();
+            CreateMap<ModelLovEntity, ModelLovModel>();
         }
     }
 }

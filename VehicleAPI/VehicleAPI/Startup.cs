@@ -31,7 +31,6 @@ namespace VehicleAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
@@ -43,21 +42,18 @@ namespace VehicleAPI
             {
                 options.AddPolicy("CorsPolicy",
                     builder => builder
-                    // .WithOrigins(corsAllowedOrigins)
-                    // .AllowCredentials()
-                    // .AllowAnyMethod()
-                    // .AllowAnyHeader()
-                    // .Build());
-                    .AllowAnyOrigin()
+                        // .WithOrigins(corsAllowedOrigins)
+                        // .AllowCredentials()
+                        // .AllowAnyMethod()
+                        // .AllowAnyHeader()
+                        // .Build());
+                        .AllowAnyOrigin()
                         .AllowAnyHeader()
                         .AllowAnyMethod());
             });
 
             // Auto Mapper Configurations
-            var mapperConfig = new MapperConfiguration(mc =>
-            {
-                mc.AddProfile(new MappingProfile());
-            });
+            var mapperConfig = new MapperConfiguration(mc => { mc.AddProfile(new MappingProfile()); });
 
             IMapper mapper = mapperConfig.CreateMapper();
             services.AddSingleton(mapper);
@@ -67,13 +63,16 @@ namespace VehicleAPI
 
             //Service Retister
             services.AddScoped<IBrandService, BrandService>();
+            services.AddScoped<IModelService, ModelService>();
+            services.AddScoped<IVehicleService, VehicleService>();
 
             //Repository Register
             services.AddScoped<IBrandRepository, BrandRepository>();
-            
+            services.AddScoped<IVehicleRepository, VehicleRepository>();
+            services.AddScoped<IModelRepository, ModelRepository>();
+
             services.AddControllers()
                 .AddJsonOptions(opts => opts.JsonSerializerOptions.PropertyNamingPolicy = null);
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -93,10 +92,7 @@ namespace VehicleAPI
 
             app.UseAuthorization();
 
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
+            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
     }
 }
