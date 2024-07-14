@@ -64,14 +64,7 @@ function DataTableHead(props) {
   return (
     <TableHead>
       <TableRow>
-        <TableCell padding="checkbox">
-          <Checkbox
-            indeterminate={numSelected > 0 && numSelected < rowCount}
-            checked={rowCount > 0 && numSelected === rowCount}
-            onChange={onSelectAllClick}
-            inputProps={{ "aria-label": "select all desserts" }}
-          />
-        </TableCell>
+        <TableCell padding="checkbox"></TableCell>
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
@@ -286,7 +279,7 @@ export default function DataTable({
               onSelectAllClick={handleSelectAllClick}
               onRequestSort={handleRequestSort}
               rowCount={data.length}
-              colum
+              column
               headCells={headCells}
             />
             <TableBody>

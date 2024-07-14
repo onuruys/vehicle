@@ -30,7 +30,7 @@ const BrandMain = () => {
   const getBrandListAction = () => {
     axios({
       method: "post",
-      url: `${config.DefaultApiUrl}/brand/all`,
+      url: `${config.DefaultApiUrl}/Brand/all`,
       data: {},
       transformResponse: [
         (data) => {
@@ -58,7 +58,6 @@ const BrandMain = () => {
   };
 
   const deleteBrandActions = (data) => {
-    console.log(data);
     axios({
       method: "delete",
       url: `${config.DefaultApiUrl}/brand/${data[0]}`,
@@ -73,7 +72,6 @@ const BrandMain = () => {
   };
 
   //#endregion
-
   useEffect(() => {
     getBrandListAction();
   }, []);
@@ -111,6 +109,7 @@ const BrandMain = () => {
             <p>
               Click to add a <Button onClick={newBrand}>New Brand</Button>
             </p>
+            <h4>Vehicle Brand Management</h4>
           </CardHeader>
           <CardBody>
             {brandData && (

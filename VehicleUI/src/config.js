@@ -1,4 +1,4 @@
 const appSettings = {
-  DefaultApiUrl: "http://localhost:58211/api",
+  DefaultApiUrl: "http://localhost:5000/api",
 };
 export default appSettings;
