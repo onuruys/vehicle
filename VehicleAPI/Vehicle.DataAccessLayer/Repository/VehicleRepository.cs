@@ -29,31 +29,39 @@ namespace Vehicle.DataAccessLayer.Repository
         {
             var sql = "dbo.DEF_Vehicle_Create";
             var sqlParams = new DynamicParameters();
+
             sqlParams.Add("VehicleID", dbType: DbType.Int32, direction: ParameterDirection.Output);
             sqlParams.Add("Name", entity.Name);
             sqlParams.Add("ModelID", entity.ModelId);
             sqlParams.Add("Active", entity.Active);
-            sqlParams.Add("Plate", entity.Plate);
-            sqlParams.Add("ModelYear", entity.ModelYear);
-            sqlParams.Add("Color", entity.Color);
-            // VALUES (@Name, @ModelId, @Plate, @ModelYear, @Color, @Active);
+            sqlParams.Add("Plate", (object)entity.Plate ?? DBNull.Value);
+            sqlParams.Add("ModelYear", (object)entity.ModelYear ?? DBNull.Value);
+            sqlParams.Add("Color", (object)entity.Color ?? DBNull.Value);
             try
             {
-                using (var con = _dataAccess.CreateConnection())
+                using (var connection = _dataAccess.CreateConnection())
                 {
-                    await con.ExecuteAsync(
-                        sql: sql,
-                        param: sqlParams,
-                        commandType: CommandType.StoredProcedure
-                    );
-                    var vehicleId = sqlParams.Get<int>("VehicleID");
-                    return vehicleId;
+                    await connection.ExecuteAsync(sql, sqlParams, commandType: CommandType.StoredProcedure);
+                    return sqlParams.Get<int>("VehicleID");
                 }
             }
             catch (SqlException ex)
             {
-                throw new Exception(ex.Message, ex);
+                if (ex.Message.Contains("INVALID_MODEL_YEAR"))
+                {
+                    throw new Exception("INVALID_MODEL_YEAR");
+                }
+                else if (ex.Message.Contains("INVALID_PLATE"))
+                {
+                    throw new Exception("INVALID_PLATE");
+                }
+                else
+                {
+                    Console.WriteLine(ex.Message);
+                    throw new Exception("An unexpected error occurred.");
+                }
             }
+
         }
 
         public async Task Delete(int id)
@@ -79,17 +87,17 @@ namespace Vehicle.DataAccessLayer.Repository
             }
         }
 
-        public async Task<List<VehicleDetailEntity>> ReadAll(VehicleFilterEntity filter)
+        public async Task<List<VehicleDetailEntity>> ReadAll(VehicleFilterEntity? filter)
         {
             var sql = "dbo.DEF_Vehicle_ReadAll";
             var sqlParams = new DynamicParameters();
-            sqlParams.Add("VehicleID", filter.VehicleId);
-            sqlParams.Add("Name", filter.Name);
-            sqlParams.Add("ModelID", filter.ModelId);
-            sqlParams.Add("Active", filter.Active);
-            sqlParams.Add("Plate", filter.Plate);
-            sqlParams.Add("ModelYear", filter.ModelYear);
-            sqlParams.Add("Color", filter.Color);
+            sqlParams.Add("VehicleID", filter?.VehicleId);
+            sqlParams.Add("Name", filter?.Name);
+            sqlParams.Add("ModelID", filter?.ModelId);
+            sqlParams.Add("Active", filter?.Active);
+            sqlParams.Add("Plate", filter?.Plate);
+            sqlParams.Add("ModelYear", filter?.ModelYear);
+            sqlParams.Add("Color", filter?.Color);
 
             try
             {

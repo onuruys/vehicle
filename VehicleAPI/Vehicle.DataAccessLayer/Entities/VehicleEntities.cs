@@ -8,7 +8,7 @@ namespace Vehicle.DataAccessLayer.Entities
         public string? Plate { get; set; }
         public int? ModelYear { get; set; }
         public string? Color { get; set; }
-        public bool? Active { get; set; }
+        public bool Active { get; set; }
     }
 
     // Detail Entity
@@ -25,7 +25,7 @@ namespace Vehicle.DataAccessLayer.Entities
         public string? Plate { get; set; }
         public int? ModelYear { get; set; }
         public string? Color { get; set; }
-        public bool Active { get; set; }
+        public bool? Active { get; set; }
     }
 
     // List of Value Entity

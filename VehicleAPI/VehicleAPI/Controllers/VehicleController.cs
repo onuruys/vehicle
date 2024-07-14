@@ -50,8 +50,24 @@ namespace VehicleAPI.Controllers
         [HttpPost()]
         public async Task<IActionResult> Create([FromBody] VehicleModel vehicleModel)
         {
-            var result = await _vehicleService.CreateVehicle(vehicleModel);
-            return Ok(result);
+            try
+            {
+                var result = await _vehicleService.CreateVehicle(vehicleModel);
+                return Ok(new  { data = result, success = true });
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message.Contains("INVALID_PLATE"))
+                {
+                    return BadRequest(new { Message = "Plate format is invalid.", success = false});
+                }
+                if (ex.Message.Contains("INVALID_MODEL_YEAR"))
+                {
+                    return BadRequest(new { Message = "Model year must be greater than 1900", success = false });
+                }
+                Console.WriteLine(ex.Message);
+                return StatusCode(500, new { Message = "An unexpected error occurred while creating the vehicle.", success = false });
+            }
         }
 
         [HttpPut()]
